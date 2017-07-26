@@ -7,22 +7,11 @@
 //
 
 //
-/*
-Problem:
-You observed that a lot of food was wasted because it was placed in the kitchen for too long and it needs to be thrown away because it has expired. You have decided to develop a software to help keep track of the inventory in the kitchen.
-There are many type of food in the kitchen for example raw food such as fish, meat; dairy product such as milk, cheese; can food such as pasta sauce, condensed milk; and fresh produce such as vegetable and fruits. Your system allows user to scan in or key in the food every time when there is a purchase. It will keep track of the quantity available in the kitchen and the expiry date, etc.
-The system should use the first-in, first-out sequence when a user key in an item to consume. It should also keep track of the inventory and give a warning when the stock is zero. It should also display a list of items to be expired in 3 days so that user can consume them before they expire.
-*/
-//
-
-//
-//Catogories: Raw; Dairy; Fresh; (Can food);
+//Catogories: Raw; Fresh; Precooked(Can);
 //
 //Functions: Add, delete, warning
 //
 //Things to add: Expiry System, Some counting for loops, and delete item function
-//
-//Create another header file item.h, so #include "item.h" in main.cpp
 //
 //Change >>cin<< as writing eg string to int will cause program to crash
 //
@@ -31,97 +20,201 @@ The system should use the first-in, first-out sequence when a user key in an ite
 #include <string>
 #include <stdlib.h>
 #include <queue>
-#include "item.h"
+#include "items.h"
 #include "display.h"
 #include "functions.h"
 using namespace std;
 
+//declaration of functions
 void displayProgramKeepsTrack();
 void displayChoice();
 void displayNewMenu();
+void displayOption();
 
-void addNewItem(string& categoryX, string& productX, int& productCodeX, float& productPriceX);
+void addNewItem(int& categoryX, string& productX, int& productCodeX, float& productPriceX);
 
+//main program here
 int main()
 {
-	//declaring queue
-	queue<item> itemsInKitchen;
-	item productDetail;
-
-	//declaration + initialization
-	int choice;
-
-	string categoryX = "NULL";
-	string productX = "NULL";
-	int productCodeX = 0;
-	float productPriceX = 0;
-
-	displayProgramKeepsTrack();
-	displayChoice();
-	cin >> choice;
-
-	while (choice != 0)
-	{
-		switch (choice)
-		{
-			case 1:
-			{
-				system("cls"); //clear console
-
-				addNewItem(categoryX, productX, productCodeX, productPriceX);
-
-				productDetail.category = categoryX;
-				productDetail.product = productX;
-				productDetail.productCode = productCodeX;
-				productDetail.productPrice = productPriceX;
-				itemsInKitchen.push(productDetail);
-
-				cout << "Number of itmes = " << itemsInKitchen.size() << endl;
-
-				break;
-			}
-			case 2:
-			{
-				cout << "ERROR: DELETE NOT IMPLENTED";
-				break;
-			}
-			case 3: //display
-			{
-				system("cls");
-
-				cout << "Before a pop, number of itmes = " << itemsInKitchen.size() << endl;
-
-				productDetail = itemsInKitchen.front();
-
-				cout << "Element at the top of the stack is: " << endl;
-				cout << productDetail.category << endl;
-				cout << productDetail.product << endl;
-				cout << productDetail.productCode << endl;
-				cout << productDetail.productPrice << endl;
-
-				//productDetail = itemsInKitchen.front();
-				itemsInKitchen.pop();
-
-				cout << "\nAfter a pop, number of items = " << itemsInKitchen.size() << endl << endl;
-
-				productDetail = itemsInKitchen.back();
-
-				cout << "Element now at the top of the stack is " << endl;
-				cout << productDetail.category << endl;
-				cout << productDetail.product << endl;
-				cout << productDetail.productCode << endl;
-				cout << productDetail.productPrice << endl;
-
-				break;
-			}
-			default:
-			{
-				cout << "DEFAULT ERROR: Enter choice again" << endl;
-				break;
-			}
-		}
-		displayNewMenu();
-		displayChoice();
-		cin >> choice;
-	}
+    //declaring queue
+    
+    queue<item> allCategories;
+    queue<item> raw;
+    queue<item> fresh;
+    queue<item> precooked;
+    
+    queue<item> allCategoriesCopy;
+    queue<item> rawCopy;
+    queue<item> freshCopy;
+    queue<item> precookedCopy;
+    
+    item productDetail;
+    
+    int i; //generic calculation type for display loop
+    int sizeToDisplay; //for display function
+    
+    //declaration + initialization
+    int functionChoice;
+    int displayTypeChoice; //to display all categories, raw categories or fresh etc
+    
+    int categoryX = 0;
+    string productX = "NULL";
+    int productCodeX = 0;
+    float productPriceX = 0;
+    
+    displayProgramKeepsTrack();
+    displayChoice();
+    cin >> functionChoice;
+    
+    while (functionChoice != 0)
+    {
+        switch (functionChoice)
+        {
+            case 1:
+            {
+                //system("cls"); //clear console
+                addNewItem(categoryX, productX, productCodeX, productPriceX);
+                
+                productDetail.category = categoryX;
+                productDetail.product = productX;
+                productDetail.productCode = productCodeX;
+                productDetail.productPrice = productPriceX;
+                allCategories.push(productDetail);
+                
+                switch (categoryX)
+                {
+                    case 1:
+                    {
+                        //for raw
+                        raw.push(productDetail);
+                        break;
+                    }
+                    case 2:
+                    {
+                        //for fresh
+                        fresh.push(productDetail);
+                        break;
+                    }
+                    case 3:
+                    {
+                        //for precooked
+                        precooked.push(productDetail);
+                        break;
+                    }
+                    default:
+                    {
+                        cout << "[WARNING]: SWITCH QUEUE CATEGORY ERROR" << endl;
+                        break;
+                    }
+                }
+                
+                //testing to check number of items, see if items are registered and pushed into queue
+                cout << "\nTotal number of itmes = " << allCategories.size() << endl;
+                cout << "Total number of items in Raw = " << raw.size() << endl;
+                cout << "Total number of items in Fresh = " << fresh.size() << endl;
+                cout << "Total number of items in Precooked = " << precooked.size() << endl;
+                
+                break;
+            }
+            case 2:
+            {
+                cout << "[ERROR]: DELETE NOT IMPLENTED";
+                break;
+            }
+            case 3: //display
+            {
+                displayOption();
+                cin >> displayTypeChoice;
+                
+                queue<item> allCategoriesCopy = allCategories;
+                
+                sizeToDisplay = static_cast<int>(allCategoriesCopy.size());
+                
+                switch (displayTypeChoice)
+                {
+                    case 1: //for all items
+                    {
+                        //
+                        
+                        for (i = sizeToDisplay; i > 0; i--)
+                        {
+                            productDetail = allCategoriesCopy.front();
+                            
+                            cout << productDetail.category << endl;
+                            cout << productDetail.product << endl;
+                            cout << productDetail.productCode << endl;
+                            cout << productDetail.productPrice << endl;
+                            
+                            allCategoriesCopy.pop();
+                            
+                            //cout << "\nSize now = " << allCategoriesCopy.size() << endl << "i = " << i << endl; //debugging
+                        }
+                        break;
+                    }
+                    case 2: //for raw items
+                    {
+                        for (i = 1; i <= (raw.size() + 1); i++)
+                        {
+                            productDetail = raw.front();
+                            
+                            //cout << "Element at the top of the stack is: " << endl;
+                            cout << productDetail.category << endl;
+                            cout << productDetail.product << endl;
+                            cout << productDetail.productCode << endl;
+                            cout << productDetail.productPrice << endl;
+                            
+                            raw.pop();
+                        }
+                        break;
+                    }
+                    case 3: //for fresh items
+                    {
+                        for (i = 1; i <= (fresh.size() + 1); i++)
+                        {
+                            productDetail = fresh.front();
+                            
+                            //cout << "Element at the top of the stack is: " << endl;
+                            cout << productDetail.category << endl;
+                            cout << productDetail.product << endl;
+                            cout << productDetail.productCode << endl;
+                            cout << productDetail.productPrice << endl;
+                            
+                            fresh.pop();
+                        }
+                        break;
+                    }
+                    case 4: //for precooked items
+                    {
+                        for (i = 1; i <= (precooked.size() + 1); i++)
+                        {
+                            productDetail = precooked.front();
+                            
+                            //cout << "Element at the top of the stack is: " << endl;
+                            cout << productDetail.category << endl;
+                            cout << productDetail.product << endl;
+                            cout << productDetail.productCode << endl;
+                            cout << productDetail.productPrice << endl;
+                            
+                            precooked.pop();
+                        }
+                        break;
+                    }
+                    default:
+                    {
+                        cout << "[WARNING]: SWITCH DISPLAY TYPE ERROR" << endl;
+                        break;
+                    }
+                }
+                break;
+            }
+            default:
+            {
+                cout << "[ERROR]: Enter choice again" << endl;
+                break;
+            }
+        }
+        displayNewMenu();
+        displayChoice();
+        cin >> functionChoice;
+    }
 }
