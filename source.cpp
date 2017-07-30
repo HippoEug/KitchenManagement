@@ -31,6 +31,7 @@ void displayProgramKeepsTrack();
 void displayChoice();
 void displayNewMenu();
 void displayOption();
+void displayDelete();
 
 void lineCount(int& numberOfLines);
 
@@ -47,6 +48,7 @@ int main()
     queue<item> precooked;
     
     queue<item> displayCopy;
+	queue<item> displayDeleteCopy;
     
     int sizeToDisplay;
     
@@ -124,7 +126,7 @@ int main()
     {
         switch (functionChoice)
         {
-            case 1:
+            case 1: //add function
             {
 				ofstream outFile;
 				outFile.open("FSTREAM DSA GROUP WORK V1.4A", std::ios_base::app);
@@ -178,9 +180,44 @@ int main()
                 
                 break;
             }
-            case 2:
+            case 2: //delete function
             {
-                cout << "[ERROR]: DELETE NOT IMPLENTED";
+				cout << "[ERROR]: DELETE NOT IMPLENTED; FUNCTION DELETE STILL IN PROGRESS";
+
+				queue<item> displayDeleteCopy = allCategories;
+				sizeToDisplay = static_cast<int>(displayDeleteCopy.size()); //for loop
+
+				for (int i = sizeToDisplay; i > 0; i--)
+				{
+					productDetail = displayDeleteCopy.front();
+
+					cout << "\nCategory: ";
+					switch (productDetail.category)
+					{
+					case 1:
+					{
+						cout << "Raw" << endl;
+						break;
+					}
+					case 2:
+					{
+						cout << "Fresh" << endl;
+						break;
+					}
+					case 3:
+					{
+						cout << "Pre-Cooked" << endl;
+						break;
+					}
+					}
+					cout << "Name: " << productDetail.product << endl;
+					cout << "Code: " << productDetail.productCode << endl;
+					cout << "Expiry Date: " << productDetail.productDate << endl;
+
+					displayCopy.pop();
+				}
+				displayDelete();
+
                 break;
             }
             case 3: //display
