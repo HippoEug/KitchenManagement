@@ -24,10 +24,10 @@
 #include <chrono>
 #include <future>
 #include <ctime>
-#include "items.h"
 #include "display.h"
 #include "functions.h"
 #include "timer.h"
+#include "items.h"
 using namespace std;
 
 void displayProgramKeepsTrack();
@@ -35,24 +35,19 @@ void displayChoice();
 void displayNewMenu();
 void displayOption();
 
-void addNewItem(int& categoryX, string& productX, int& productCodeX, float& productPriceX);
-
-void timer();
-void updateTime();
-
-void daysCounter(int dc_days, int dc_months, int dc_years, int& dcNumberOfDays); //one in function is daysCounterX
+void addNewItem(int& categoryX, string& productX, int& productCodeX, long long& dateX);
 
 int main()
 {
+	item productDetail;
+	dateRegister datesData;
+
     queue<item> allCategories;
     queue<item> raw;
     queue<item> fresh;
     queue<item> precooked;
     
     queue<item> displayCopy;
-    
-    item productDetail;
-    dateRegister datesData;
     
     int sizeToDisplay;
     
@@ -64,7 +59,7 @@ int main()
     int categoryX = 0;
     string productX = "NULL";
     int productCodeX = 0;
-    float productPriceX = 0;
+	long long dateX = 0;
     
     auto futureX = async(&dateRegister::updateDate, &datesData); //date running in background
     auto calculation = async(&dateRegister::dayMainCalculator, &datesData); //counting number of days from Year 2000 in background
@@ -80,12 +75,12 @@ int main()
             case 1:
             {
                 system("cls"); //clear console
-                addNewItem(categoryX, productX, productCodeX, productPriceX);
+                addNewItem(categoryX, productX, productCodeX, dateX);
                 
                 productDetail.category = categoryX;
                 productDetail.product = productX;
                 productDetail.productCode = productCodeX;
-                productDetail.productPrice = productPriceX;
+				productDetail.productDate = dateX;
                 
                 allCategories.push(productDetail); //pushing into queue of all categories
                 
@@ -117,6 +112,7 @@ int main()
                 }
                 
                 //testing to check number of items, see if items are registered and pushed into queue
+				system("cls");
                 cout << "\nTotal number of itmes = " << allCategories.size() << endl;
                 cout << "Total number of items in Raw = " << raw.size() << endl;
                 cout << "Total number of items in Fresh = " << fresh.size() << endl;
@@ -131,6 +127,7 @@ int main()
             }
             case 3: //display
             {
+				system("cls");
                 displayOption();
                 cin >> displayTypeChoice;
                 
@@ -166,7 +163,7 @@ int main()
                             }
                             cout << "Name: " << productDetail.product << endl;
                             cout << "Code: " << productDetail.productCode << endl;
-                            cout << "Price: $" << productDetail.productPrice << endl;
+							cout << "Expiry Date: " << productDetail.productDate << endl;
                                     
                             displayCopy.pop();
                         }
@@ -183,8 +180,8 @@ int main()
                             
                             cout << "\nCategory: Raw" << endl;
                             cout << "Name: " << productDetail.product << endl;
-                            cout << "Code: " << productDetail.productCode << endl;
-                            cout << "Price: $" << productDetail.productPrice << endl;
+							cout << "Code: " << productDetail.productCode << endl;
+							cout << "Expiry Date: " << productDetail.productDate << endl;
                             
                             displayCopy.pop();
                         }
@@ -202,7 +199,7 @@ int main()
                             cout << "\nCategory: Fresh" << endl;
                             cout << "Name: " << productDetail.product << endl;
                             cout << "Code: " << productDetail.productCode << endl;
-                            cout << "Price: $" << productDetail.productPrice << endl;
+							cout << "Expiry Date: " << productDetail.productDate << endl;
                             
                             displayCopy.pop();
                         }
@@ -220,7 +217,7 @@ int main()
                             cout << "\nCategory: Pre-Cooked" << endl;
                             cout << "Name: " << productDetail.product << endl;
                             cout << "Code: " << productDetail.productCode << endl;
-                            cout << "Price: $" << productDetail.productPrice << endl;
+							cout << "Expiry Date: " << productDetail.productDate << endl;
                             
                             displayCopy.pop();
                         }
