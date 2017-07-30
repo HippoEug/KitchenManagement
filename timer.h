@@ -4,7 +4,7 @@ using namespace std;
 class dateRegister
 {
 public:
-    int c_count;
+    int daysSinceDefault; //default is set to Year 2000
     
     int c_year;
     int c_month;
@@ -96,8 +96,10 @@ void dateRegister::daysCounterX(int dc_days, int dc_months, int dc_years, int& d
                 date = date + 365;
             }
         }
+		daysSinceDefault = date;
         //cout << "Days since 2000 = " << date << endl; //for debugging purpose
         //cout << "Date + 3 = " << date + 3 << endl; //for debugging purpose
+		//cout << "Days in Class = " << daysSinceDefault << endl;
     }
     else
     {
