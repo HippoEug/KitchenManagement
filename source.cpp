@@ -7,13 +7,10 @@
 //
 
 //
-//Catogories: Raw; Fresh; Precooked(Can);
-//
-//Functions: Add, delete, warning
-//
+//Catogories: Raw; Fresh; Precooked/Can Food
+//Functions: Add, Delete, Warning when food is about to expire
 //Things to add: Expiry System, Some counting for loops, and delete item function
-//
-//Change >>cin<< as writing eg string to int will cause program to crash
+//Change >>cin<< to >>get<< as writing eg string to int will cause program to crash
 //
 
 #include <iostream>
@@ -35,6 +32,8 @@ void displayChoice();
 void displayNewMenu();
 void displayOption();
 
+void lineCount(int& numberOfLines);
+
 void addNewItem(int& categoryX, string& productX, int& productCodeX, long long& dateX);
 
 int main()
@@ -55,15 +54,68 @@ int main()
     int functionChoice;
     int displayTypeChoice; //to display all categories, raw categories or fresh etc
     
+	int numberOfLines;
+
+	int fstreamCategory;
+	string fstreamName;
+	int fstreamCode;
+	long long fstreamDate;
+
     //intialize for adding new item
     int categoryX = 0;
     string productX = "NULL";
     int productCodeX = 0;
 	long long dateX = 0;
-    
+
+	//program starts here
     auto futureX = async(&dateRegister::updateDate, &datesData); //date running in background
     auto calculation = async(&dateRegister::dayMainCalculator, &datesData); //counting number of days from Year 2000 in background
     
+	ifstream inFile;
+	inFile.open("FSTREAM DSA GROUP WORK V1.4A");
+
+	lineCount(numberOfLines);
+
+	for (int i = 1; i <= numberOfLines; i++)
+	{
+		inFile >> fstreamCategory >> fstreamName >> fstreamCode >> fstreamDate;
+
+		productDetail.category = fstreamCategory;
+		productDetail.product = fstreamName;
+		productDetail.productCode = fstreamCode;
+		productDetail.productDate = fstreamDate;
+
+		allCategories.push(productDetail);
+
+		switch (fstreamCategory) //individually pushing into food type
+		{
+			case 1:
+			{
+				//for raw
+				raw.push(productDetail);
+				break;
+			}
+			case 2:
+			{
+				//for fresh
+				fresh.push(productDetail);
+				break;
+			}
+			case 3:
+			{
+				//for precooked
+				precooked.push(productDetail);
+				break;
+			}
+			default:
+			{
+				cout << "[WARNING]: FSTREAM CATEGORY INPUT ERROR" << endl;
+				break;
+			}
+		}
+	}
+	inFile.close();
+
     displayProgramKeepsTrack();
     displayChoice();
     cin >> functionChoice;
@@ -74,6 +126,9 @@ int main()
         {
             case 1:
             {
+				ofstream outFile;
+				outFile.open("FSTREAM DSA GROUP WORK V1.4A", std::ios_base::app);
+
                 system("cls"); //clear console
                 addNewItem(categoryX, productX, productCodeX, dateX);
                 
@@ -83,6 +138,9 @@ int main()
 				productDetail.productDate = dateX;
                 
                 allCategories.push(productDetail); //pushing into queue of all categories
+
+				outFile << categoryX << " " << productX << " " << productCodeX << " " << dateX << endl;
+				outFile.close();
                 
                 switch (categoryX) //individually pushing into food type
                 {
@@ -140,7 +198,7 @@ int main()
                         
                         for (int i = sizeToDisplay; i > 0; i--)
                         {
-                            productDetail = displayCopy.front();
+							productDetail = displayCopy.front();
                             
                             cout << "\nCategory: ";
                             switch (productDetail.category)
@@ -229,6 +287,7 @@ int main()
                         break;
                     }
                 }
+				inFile.close();
                 break;
             }
             default:
