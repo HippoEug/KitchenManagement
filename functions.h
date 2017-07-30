@@ -21,3 +21,16 @@ void addNewItem(int& categoryX, string& productX, int& productCodeX, long long& 
 	cout << "Enter Product Expiry Date [DDMMYYYY]: ";
 	cin >> dateX;
 }
+
+void lineCount(int& numberOfLines)
+{
+	ifstream inFile;
+	inFile.open("FSTREAM DSA GROUP WORK V1.4A");
+
+	string line;
+
+	numberOfLines = 0;
+
+	while (getline(inFile, line))
+		++numberOfLines;
+}
