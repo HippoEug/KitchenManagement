@@ -34,3 +34,9 @@ void displayOption()
 	cout << "Press [4]: Precooked items" << endl;
 	cout << "Choice: ";
 }
+
+void displayDelete()
+{
+	cout << "\nEnter the Item's Product Code to Delete" << endl;
+	cout << "Product Code: ";
+}
