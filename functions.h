@@ -1,6 +1,4 @@
 #pragma once
-#include <iostream>
-#include <string>
 using namespace std;
 
 void addNewItem(int& categoryX, string& productX, int& productCodeX, float& productPriceX)
