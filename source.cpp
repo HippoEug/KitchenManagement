@@ -18,13 +18,18 @@
 
 #include <iostream>
 #include <string>
+#include <iomanip>
+#include <fstream>
 #include <queue>
+#include <chrono>
+#include <future>
+#include <ctime>
 #include "items.h"
 #include "display.h"
 #include "functions.h"
+#include "timer.h"
 using namespace std;
 
-//declaration of functions
 void displayProgramKeepsTrack();
 void displayChoice();
 void displayNewMenu();
@@ -32,11 +37,13 @@ void displayOption();
 
 void addNewItem(int& categoryX, string& productX, int& productCodeX, float& productPriceX);
 
-//main program here
+void timer();
+void updateTime();
+
+void daysCounter(int dc_days, int dc_months, int dc_years, int& dcNumberOfDays); //one in function is daysCounterX
+
 int main()
 {
-    //declaring queue
-    
     queue<item> allCategories;
     queue<item> raw;
     queue<item> fresh;
@@ -45,9 +52,9 @@ int main()
     queue<item> displayCopy;
     
     item productDetail;
+    dateRegister datesData;
     
-    int i; //generic calculation type for display loop
-    int sizeToDisplay; //for display function
+    int sizeToDisplay;
     
     //declaration + initialization
     int functionChoice;
@@ -58,6 +65,9 @@ int main()
     string productX = "NULL";
     int productCodeX = 0;
     float productPriceX = 0;
+    
+    auto futureX = async(&dateRegister::updateDate, &datesData); //date running in background
+    auto calculation = async(&dateRegister::dayMainCalculator, &datesData); //counting number of days from Year 2000 in background
     
     displayProgramKeepsTrack();
     displayChoice();
@@ -131,7 +141,7 @@ int main()
                         queue<item> displayCopy = allCategories;
                         sizeToDisplay = static_cast<int>(displayCopy.size()); //for loop
                         
-                        for (i = sizeToDisplay; i > 0; i--)
+                        for (int i = sizeToDisplay; i > 0; i--)
                         {
                             productDetail = displayCopy.front();
                             
@@ -167,7 +177,7 @@ int main()
                         queue<item> displayCopy = raw;
                         sizeToDisplay = static_cast<int>(displayCopy.size());
                             
-                        for (i = sizeToDisplay; i > 0; i--)
+                        for (int i = sizeToDisplay; i > 0; i--)
                         {
                             productDetail = displayCopy.front();
                             
@@ -185,7 +195,7 @@ int main()
                         queue<item> displayCopy = fresh;
                         sizeToDisplay = static_cast<int>(displayCopy.size());
                         
-                        for (i = sizeToDisplay; i > 0; i--)
+                        for (int i = sizeToDisplay; i > 0; i--)
                         {
                             productDetail = displayCopy.front();
                             
@@ -203,7 +213,7 @@ int main()
                         queue<item> displayCopy = precooked;
                         sizeToDisplay = static_cast<int>(displayCopy.size());
                         
-                        for (i = sizeToDisplay; i > 0; i--)
+                        for (int i = sizeToDisplay; i > 0; i--)
                         {
                             productDetail = displayCopy.front();
                             
