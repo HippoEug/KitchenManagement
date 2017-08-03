@@ -68,7 +68,7 @@ int main()
     getData.open("V1.2B", std::fstream::in | std::fstream::out | std::fstream::app);
     //getData.open("V2.1B", std::ios::_Noreplace); //use this for windows
     
-    cout << "Number of lines = " << numberOfLines << endl;
+    //cout << "Number of lines = " << numberOfLines << endl; //for debugging
     
     for (int i = 1; i <= numberOfLines; i++)
     {
