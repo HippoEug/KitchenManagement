@@ -5,14 +5,20 @@ class dateRegister
 {
 public:
     int daysSinceDefault; //default is set to Year 2000
+    int daysToExpiry;
     
     int c_year;
     int c_month;
     int c_day;
     
+    int c_yearCheck;
+    int c_monthCheck;
+    int c_dayCheck;
+    
     void updateDate();
     void dayMainCalculator();
     void daysCounterX(int dc_days, int dc_months, int dc_years, int& dcNumberOfDays);
+    void dayAlarm();
 };
 
 void dateRegister::updateDate()
@@ -47,7 +53,7 @@ void dateRegister::dayMainCalculator()
     while (1)
     {
         daysCounterX(c_day, c_month, c_year, countX);
-        this_thread::sleep_for(chrono::seconds(1));
+        this_thread::sleep_for(chrono::seconds(10));
     }
 }
 
@@ -96,13 +102,40 @@ void dateRegister::daysCounterX(int dc_days, int dc_months, int dc_years, int& d
                 date = date + 365;
             }
         }
-		daysSinceDefault = date;
+        daysSinceDefault = date;
         //cout << "Days since 2000 = " << date << endl; //for debugging purpose
         //cout << "Date + 3 = " << date + 3 << endl; //for debugging purpose
-		//cout << "Days in Class = " << daysSinceDefault << endl;
+        //cout << "Days in Class = " << daysSinceDefault << endl;
     }
     else
     {
         cout << "[ERROR]: Wrong format or input year is below 2000. Try again!" << endl;
+    }
+}
+
+void dateRegister::dayAlarm()
+{
+    int numberOfLines;
+    
+    int fstreamCategoryExpiry;
+    string fstreamNameExpiry;
+    int fstreamCodeExpiry;
+    long long fstreamDateExpiry;
+    
+    while (1)
+    {
+        lineCount(numberOfLines);
+        
+        ifstream getDateData;
+        getDateData.open("V2.1B", std::fstream::in | std::fstream::out | std::fstream::app);
+        //getDateData.open("V2.1B", std::ios::_Noreplace);
+        
+        getDateData >> fstreamCategoryExpiry >> fstreamNameExpiry >> fstreamCodeExpiry >> fstreamDateExpiry;
+        
+        //cout << "Date Expiry = " << fstreamDateExpiry << endl; //for debugging
+        
+        getDateData.close();
+        
+        this_thread::sleep_for(chrono::seconds(10));
     }
 }
