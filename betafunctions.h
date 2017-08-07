@@ -26,7 +26,7 @@ void lineCount(int& numberOfLines)
 {
 	ifstream lineCount;
 	//lineCount.open("V1.2A", std::fstream::in | std::fstream::out | std::fstream::app);
-	lineCount.open("V2.1A", std::ios::_Noreplace);
+	lineCount.open("V2.1B", std::ios::_Noreplace);
 
 	string line;
 
