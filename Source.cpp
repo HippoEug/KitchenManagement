@@ -36,6 +36,9 @@ int main()
 	queue<item> allCategories;
 	queue<item> displayCopy;
 	queue<item> displayDeleteCopy;
+	queue<item> rawList;
+	queue<item> freshList;
+	queue<item> precookedList;
 
 	//declarations of variables
 	int sizeToDisplay; //to count the number of times to loop
@@ -44,7 +47,7 @@ int main()
 	int displayTypeChoice; //to display all items, raw or precooked
 	int codeToDelete; //for user to enter code to delete
 
-	//delcarations for fstream
+					  //delcarations for fstream
 	int fstreamCategory;
 	string fstreamName;
 	int fstreamCode;
@@ -66,26 +69,25 @@ int main()
 	cout << "Loading... " << endl;
 	cout << "HippoEug.Inc Version: 2.1C" << endl;
 	this_thread::sleep_for(chrono::seconds(1));
-	cout << "Auto-Detecing PR1 Channel..." << endl;
-	cout << "Auto-Detecing PR1 Channel..." << endl;
-	cout << "Auto-Detecing PR1 Channel..." << endl;
-	cout << "Auto-Detecing PR1 Channel..." << endl;
-	cout << "Auto-Detecing PR1 Channel..." << endl;
+	cout << "Auto-Detecing Date..." << endl;
+	cout << "Auto-Detecing Time..." << endl;
+	cout << "AUTO-DETECTION COMPLETED" << endl << endl;
+	cout << "Initializing Data..." << endl;
 	cout << "INITIALIZATION COMPLETED" << endl;
-	this_thread::sleep_for(chrono::seconds(2));
+	this_thread::sleep_for(chrono::seconds(1));
 
 	//functions to run in the background
 	auto getDate = async(&dateRegister::updateDate, &datesData); //getting date in the background
 	auto dayCalculation = async(&dateRegister::dayMainCalculator, &datesData); //count number of days since year 2000 in the background
 	auto dayWarning = async(&dateRegister::dayAlarm, &datesData); //to give warning when expiry date is close
 
-	//copying existing data into
+																  //copying existing data into
 	lineCount(numberOfLines); //becareful, ifstream content here too
 	ifstream getData;
 	//getData.open("V1.2B", std::fstream::in | std::fstream::out | std::fstream::app);
 	getData.open("V2.1C", std::ios::_Noreplace); //use this for windows
 
-	//cout << "Number of lines = " << numberOfLines << endl; //for debugging
+												 //cout << "Number of lines = " << numberOfLines << endl; //for debugging
 
 	for (int i = 1; i <= numberOfLines; i++)
 	{
@@ -170,8 +172,6 @@ int main()
 			}
 
 			sizeToDisplay = static_cast<int>(displayDeleteCopy.size());
-
-			//system("cls"); //rellocate this
 			displayDelete();
 			cin >> codeToDelete;
 
@@ -182,6 +182,18 @@ int main()
 				if (productDetail.productCode != codeToDelete)
 				{
 					allCategories.push(productDetail);
+					switch (productDetail.category)
+					{
+					case 1:
+						rawList.push(productDetail);
+						break;
+					case 2:
+						freshList.push(productDetail);
+						break;
+					case 3:
+						precookedList.push(productDetail);
+						break;
+					}
 					displayDeleteCopy.pop();
 				}
 				else if (productDetail.productCode == codeToDelete)
@@ -189,6 +201,19 @@ int main()
 					cout << "Data has been deleted" << endl;
 					displayDeleteCopy.pop();
 				}
+			}
+			
+			if (rawList.size() == 0)
+			{
+				cout << "NO RAW ITEMS REMAINING" << endl;
+			}
+			if (freshList.size() == 0)
+			{
+				cout << "NO FRESH ITEMS REMAINING" << endl;
+			}
+			if (precookedList.size() == 0)
+			{
+				cout << "NO PRE-COOKED ITEMS REMAINING" << endl;
 			}
 			break;
 		}
@@ -322,6 +347,24 @@ int main()
 			displayCopy.pop();
 		}
 		writeData.close();
+
+		sizeToDisplay = static_cast<int>(rawList.size());
+		for (int i = 1; i <= sizeToDisplay; i++)
+		{
+			rawList.pop();
+		}
+
+		sizeToDisplay = static_cast<int>(freshList.size());
+		for (int i = 1; i <= sizeToDisplay; i++)
+		{
+			freshList.pop();
+		}
+
+		sizeToDisplay = static_cast<int>(precookedList.size());
+		for (int i = 1; i <= sizeToDisplay; i++)
+		{
+			precookedList.pop();
+		}
 
 		displayNewMenu();
 		displayChoice();
