@@ -1,5 +1,5 @@
-Source Code Documentation: (8 Aug 2017) 
-The purpose of the source code documentation is to enable the succeeding programmers able to have a clear understanding on the inner working of the software at a glance. The document should contain all functions that were coded, brief description on the purpose of the function, variables used by the function and also any global variables declared in the software. You are free to use any available libraries, but you must explain what it is and what you are using the library for. Operating environment, such as the hardware platform, the type of development environment and the running environment should brief stated.
+**Source Code Documentation: (8 Aug 2017) 
+The purpose of the source code documentation is to enable the succeeding programmers able to have a clear understanding on the inner working of the software at a glance. The document should contain all functions that were coded, brief description on the purpose of the function, variables used by the function and also any global variables declared in the software. You are free to use any available libraries, but you must explain what it is and what you are using the library for. Operating environment, such as the hardware platform, the type of development environment and the running environment should brief stated.**
 
 #include STL header file that allows input and output streams.
 
