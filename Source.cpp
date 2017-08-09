@@ -67,7 +67,7 @@ int main()
 
 	displayProgramKeepsTrack();
 	cout << "Loading... " << endl;
-	cout << "Version: 2.1C" << endl;
+	cout << "Version: V1.1A" << endl;
 	this_thread::sleep_for(chrono::seconds(1));
 	cout << "Auto-Detecing Date..." << endl;
 	cout << "Auto-Detecing Time..." << endl;
