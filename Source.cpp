@@ -67,28 +67,23 @@ int main()
 
 	displayProgramKeepsTrack();
 	cout << "Loading... " << endl;
-	cout << "HippoEug.Inc Version: 2.1C" << endl;
+	cout << "Version: 2.1C" << endl;
 	this_thread::sleep_for(chrono::seconds(1));
 	cout << "Auto-Detecing Date..." << endl;
 	cout << "Auto-Detecing Time..." << endl;
-	cout << "AUTO-DETECTION COMPLETED" << endl << endl;
-	cout << "Initializing Data..." << endl;
-	cout << "INITIALIZATION COMPLETED" << endl;
 	this_thread::sleep_for(chrono::seconds(1));
 
 	//functions to run in the background
 	auto getDate = async(&dateRegister::updateDate, &datesData); //getting date in the background
 	auto dayCalculation = async(&dateRegister::dayMainCalculator, &datesData); //count number of days since year 2000 in the background
-	auto dayWarning = async(&dateRegister::dayAlarm, &datesData); //to give warning when expiry date is close
+	this_thread::sleep_for(chrono::seconds(1));
 
-																  //copying existing data into
-	lineCount(numberOfLines); //becareful, ifstream content here too
+	lineCount(numberOfLines); //copying existing data into queue
 	ifstream getData;
 	//getData.open("V1.2B", std::fstream::in | std::fstream::out | std::fstream::app);
 	getData.open("V2.1C", std::ios::_Noreplace); //use this for windows
 
-												 //cout << "Number of lines = " << numberOfLines << endl; //for debugging
-
+	//cout << "Number of lines = " << numberOfLines << endl; //for debugging
 	for (int i = 1; i <= numberOfLines; i++)
 	{
 		getData >> fstreamCategory >> fstreamName >> fstreamCode >> fstreamDateDay >> fstreamDateMonth >> fstreamDateYear;
@@ -103,10 +98,15 @@ int main()
 		allCategories.push(productDetail);
 	}
 	getData.close();
+	cout << "AUTO-DETECTION COMPLETED" << endl << endl;
+	cout << "Initializing Data..." << endl;
+	cout << "INITIALIZATION COMPLETED" << endl;
 
-	this_thread::sleep_for(chrono::seconds(1));
+	this_thread::sleep_for(chrono::seconds(2));
+	auto dayWarning = async(&dateRegister::dayAlarm, &datesData); //to give warning when expiry date is close
 
 	//start of program
+	system("cls");
 	displayChoice();
 	cin >> functionChoice;
 
@@ -198,7 +198,7 @@ int main()
 				}
 				else if (productDetail.productCode == codeToDelete)
 				{
-					cout << "Data has been deleted" << endl;
+					cout << "Data has been deleted" << endl << endl;
 					displayDeleteCopy.pop();
 				}
 			}
