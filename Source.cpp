@@ -71,7 +71,6 @@ int main()
 	this_thread::sleep_for(chrono::seconds(1));
 	cout << "\nAuto-Detecing Date..." << endl;
 	cout << "Auto-Detecing Time..." << endl;
-	this_thread::sleep_for(chrono::seconds(1));
 
 	//functions to run in the background
 	auto getDate = async(&dateRegister::updateDate, &datesData); //getting date in the background
