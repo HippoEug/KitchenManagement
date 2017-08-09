@@ -66,10 +66,10 @@ int main()
 	int dateYearX = 0;
 
 	displayProgramKeepsTrack();
-	cout << "Loading... " << endl;
+	cout << "LOADING: " << endl;
 	cout << "Version: V1.11A" << endl;
 	this_thread::sleep_for(chrono::seconds(1));
-	cout << "Auto-Detecing Date..." << endl;
+	cout << "\nAuto-Detecing Date..." << endl;
 	cout << "Auto-Detecing Time..." << endl;
 	this_thread::sleep_for(chrono::seconds(1));
 
