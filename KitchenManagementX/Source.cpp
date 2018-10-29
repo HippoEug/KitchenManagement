@@ -10,7 +10,6 @@
 #include "functions.hpp"
 #include "timer.hpp"
 #include "items.hpp"
-using namespace std;
 
 int main() {
 	//class declarations
@@ -18,12 +17,12 @@ int main() {
 	dateRegister datesData;
 
 	//queue declarations
-	queue<item> allCategories;
-	queue<item> displayCopy;
-	queue<item> displayDeleteCopy;
-	queue<item> rawList;
-	queue<item> freshList;
-	queue<item> precookedList;
+	std::queue<item> allCategories;
+	std::queue<item> displayCopy;
+	std::queue<item> displayDeleteCopy;
+	std::queue<item> rawList;
+	std::queue<item> freshList;
+	std::queue<item> precookedList;
 
 	//declarations of variables
 	int sizeToDisplay; //to count the number of times to loop
@@ -34,7 +33,7 @@ int main() {
 
 					  //delcarations for fstream
 	int fstreamCategory;
-	string fstreamName;
+	std::string fstreamName;
 	int fstreamCode;
 	//long long fstreamDate; //change this
 	int fstreamDateDay;
@@ -43,7 +42,7 @@ int main() {
 
 	//initialization when adding new item
 	int categoryX = 0;
-	string productX = "NULL";
+	std::string productX = "NULL";
 	int productCodeX = 0;
 	//long long dateX = 0;
 	int dateDayX = 0;
@@ -51,19 +50,19 @@ int main() {
 	int dateYearX = 0;
 
 	displayProgramKeepsTrack();
-	cout << "LOADING: " << endl;
-	cout << "Version: V1.11A" << endl;
-	this_thread::sleep_for(chrono::seconds(1));
-	cout << "\nAuto-Detecing Date..." << endl;
-	cout << "Auto-Detecing Time..." << endl;
+	std::cout << "LOADING: " << std::endl;
+	std::cout << "Version: V1.11A" << std::endl;
+	std::this_thread::sleep_for(std::chrono::seconds(1));
+	std::cout << "\nAuto-Detecing Date..." << std::endl;
+	std::cout << "Auto-Detecing Time..." << std::endl;
 
 	//functions to run in the background
-	auto getDate = async(&dateRegister::updateDate, &datesData); //getting date in the background
-	auto dayCalculation = async(&dateRegister::dayMainCalculator, &datesData); //count number of days since year 2000 in the background
-	this_thread::sleep_for(chrono::seconds(1));
+	auto getDate = std::async(&dateRegister::updateDate, &datesData); //getting date in the background
+	auto dayCalculation = std::async(&dateRegister::dayMainCalculator, &datesData); //count number of days since year 2000 in the background
+	std::this_thread::sleep_for(std::chrono::seconds(1));
 
 	lineCount(numberOfLines); //copying existing data into queue
-	ifstream getData;
+	std::ifstream getData;
 	//getData.open("V1.2B", std::fstream::in | std::fstream::out | std::fstream::app);
 	getData.open("V2.1C", std::ios::_Noreplace); //use this for windows
 
@@ -81,17 +80,17 @@ int main() {
 		allCategories.push(productDetail);
 	}
 	getData.close();
-	cout << "AUTO-DETECTION COMPLETED" << endl << endl;
-	cout << "Initializing Data..." << endl;
-	cout << "INITIALIZATION COMPLETED" << endl;
+	std::cout << "AUTO-DETECTION COMPLETED" << std::endl << std::endl;
+	std::cout << "Initializing Data..." << std::endl;
+	std::cout << "INITIALIZATION COMPLETED" << std::endl;
 
-	this_thread::sleep_for(chrono::seconds(2));
-	auto dayWarning = async(&dateRegister::dayAlarm, &datesData); //to give warning when expiry date is close
+	std::this_thread::sleep_for(std::chrono::seconds(2));
+	auto dayWarning = std::async(&dateRegister::dayAlarm, &datesData); //to give warning when expiry date is close
 
 																  //start of program
 	system("cls");
 	displayChoice();
-	cin >> functionChoice;
+	std::cin >> functionChoice;
 
 	while (functionChoice != 0) {
 		switch (functionChoice) {
@@ -109,47 +108,47 @@ int main() {
 
 			allCategories.push(productDetail);
 
-			cout << "\nTotal number of items = " << allCategories.size() << endl;
+			std::cout << "\nTotal number of items = " << allCategories.size() << std::endl;
 			break;
 		}
-		//function to delete item
+				//function to delete item
 		case 2: {
 			system("cls");
 			//to display current items
-			queue<item> displayCopy = allCategories;
+			std::queue<item> displayCopy = allCategories;
 			sizeToDisplay = static_cast<int>(displayCopy.size());
 
 			for (int i = 1; i <= sizeToDisplay; i++) {
 				productDetail = displayCopy.front();
 
-				cout << "\nCategory: ";
+				std::cout << "\nCategory: ";
 				switch (productDetail.category) {
 				case 1:
-					cout << "Raw" << endl;
+					std::cout << "Raw" << std::endl;
 					break;
 				case 2:
-					cout << "Fresh" << endl;
+					std::cout << "Fresh" << std::endl;
 					break;
 				case 3:
-					cout << "Pre-Cooked" << endl;
+					std::cout << "Pre-Cooked" << std::endl;
 					break;
 				}
-				cout << "Name: " << productDetail.product << endl;
-				cout << "Code: " << productDetail.productCode << endl;
-				cout << "Expiry Date: " << productDetail.dateDay << "-" << productDetail.dateMonth << "-" << productDetail.dateYear << endl;
+				std::cout << "Name: " << productDetail.product << std::endl;
+				std::cout << "Code: " << productDetail.productCode << std::endl;
+				std::cout << "Expiry Date: " << productDetail.dateDay << "-" << productDetail.dateMonth << "-" << productDetail.dateYear << std::endl;
 
 				displayCopy.pop();
 			}
 
 			//to delete item and copy into a queue
-			queue<item> displayDeleteCopy = allCategories;
+			std::queue<item> displayDeleteCopy = allCategories;
 			for (int i = 1; i <= sizeToDisplay; i++) {
 				allCategories.pop();
 			}
 
 			sizeToDisplay = static_cast<int>(displayDeleteCopy.size());
 			displayDelete();
-			cin >> codeToDelete;
+			std::cin >> codeToDelete;
 
 			for (int i = 1; i <= sizeToDisplay; i++) { //for (int i = 0; i < sizeToDisplay; i++)
 				productDetail = displayDeleteCopy.front();
@@ -170,120 +169,120 @@ int main() {
 					displayDeleteCopy.pop();
 				}
 				else if (productDetail.productCode == codeToDelete) {
-					cout << "Data has been deleted" << endl << endl;
+					std::cout << "Data has been deleted" << std::endl << std::endl;
 					displayDeleteCopy.pop();
 				}
 			}
 
 			if (rawList.size() == 0) {
-				cout << "NO RAW ITEMS REMAINING" << endl;
+				std::cout << "NO RAW ITEMS REMAINING" << std::endl;
 			}
 			if (freshList.size() == 0) {
-				cout << "NO FRESH ITEMS REMAINING" << endl;
+				std::cout << "NO FRESH ITEMS REMAINING" << std::endl;
 			}
 			if (precookedList.size() == 0) {
-				cout << "NO PRE-COOKED ITEMS REMAINING" << endl;
+				std::cout << "NO PRE-COOKED ITEMS REMAINING" << std::endl;
 			}
 			break;
 		}
-		//function to display items
+				//function to display items
 		case 3: {
 			system("cls");
 			displayOption();
-			cin >> displayTypeChoice;
+			std::cin >> displayTypeChoice;
 
 			switch (displayTypeChoice) {
 				//to display all items in raw, precooked and fresh
 			case 1: {
-				queue<item> displayCopy = allCategories;
+				std::queue<item> displayCopy = allCategories;
 				sizeToDisplay = static_cast<int>(displayCopy.size());
 
 				for (int i = 1; i <= sizeToDisplay; i++) {
 					productDetail = displayCopy.front();
 
-					cout << "\nCategory: ";
+					std::cout << "\nCategory: ";
 					switch (productDetail.category) {
 					case 1:
-						cout << "Raw" << endl;
+						std::cout << "Raw" << std::endl;
 						break;
 					case 2:
-						cout << "Fresh" << endl;
+						std::cout << "Fresh" << std::endl;
 						break;
 					case 3:
-						cout << "Pre-Cooked" << endl;
+						std::cout << "Pre-Cooked" << std::endl;
 						break;
 					}
-					cout << "Name: " << productDetail.product << endl;
-					cout << "Code: " << productDetail.productCode << endl;
-					cout << "Expiry Date: " << productDetail.dateDay << "-" << productDetail.dateMonth << "-" << productDetail.dateYear << endl;
+					std::cout << "Name: " << productDetail.product << std::endl;
+					std::cout << "Code: " << productDetail.productCode << std::endl;
+					std::cout << "Expiry Date: " << productDetail.dateDay << "-" << productDetail.dateMonth << "-" << productDetail.dateYear << std::endl;
 
 					displayCopy.pop();
 				}
 				break;
 			}
-			//to display raw items
+					//to display raw items
 			case 2: {
-				queue<item> displayCopy = allCategories;
+				std::queue<item> displayCopy = allCategories;
 				sizeToDisplay = static_cast<int>(displayCopy.size());
 
 				for (int i = 1; i <= sizeToDisplay; i++) {
 					productDetail = displayCopy.front();
 
 					if ((productDetail.category) == 1) {
-						cout << "\nCategory: Raw" << endl;
-						cout << "Name: " << productDetail.product << endl;
-						cout << "Code: " << productDetail.productCode << endl;
-						cout << "Expiry Date: " << productDetail.dateDay << "-" << productDetail.dateMonth << "-" << productDetail.dateYear << endl;
+						std::cout << "\nCategory: Raw" << std::endl;
+						std::cout << "Name: " << productDetail.product << std::endl;
+						std::cout << "Code: " << productDetail.productCode << std::endl;
+						std::cout << "Expiry Date: " << productDetail.dateDay << "-" << productDetail.dateMonth << "-" << productDetail.dateYear << std::endl;
 					}
 					displayCopy.pop();
 				}
 				break;
 			}
-			//to display fresh items
+					//to display fresh items
 			case 3: {
-				queue<item> displayCopy = allCategories;
+				std::queue<item> displayCopy = allCategories;
 				sizeToDisplay = static_cast<int>(displayCopy.size());
 
 				for (int i = 1; i <= sizeToDisplay; i++) {
 					productDetail = displayCopy.front();
 
 					if ((productDetail.category) == 2) {
-						cout << "\nCategory: Fresh" << endl;
-						cout << "Name: " << productDetail.product << endl;
-						cout << "Code: " << productDetail.productCode << endl;
-						cout << "Expiry Date: " << productDetail.dateDay << "-" << productDetail.dateMonth << "-" << productDetail.dateYear << endl;
+						std::cout << "\nCategory: Fresh" << std::endl;
+						std::cout << "Name: " << productDetail.product << std::endl;
+						std::cout << "Code: " << productDetail.productCode << std::endl;
+						std::cout << "Expiry Date: " << productDetail.dateDay << "-" << productDetail.dateMonth << "-" << productDetail.dateYear << std::endl;
 					}
 					displayCopy.pop();
 				}
 				break;
 			}
-			//to display precooked items
+					//to display precooked items
 			case 4: {
-				queue<item> displayCopy = allCategories;
+				std::queue<item> displayCopy = allCategories;
 				sizeToDisplay = static_cast<int>(displayCopy.size());
 
 				for (int i = 1; i <= sizeToDisplay; i++) {
 					productDetail = displayCopy.front();
 
 					if ((productDetail.category) == 3) {
-						cout << "\nCategory: Pre-Cooked" << endl;
-						cout << "Name: " << productDetail.product << endl;
-						cout << "Code: " << productDetail.productCode << endl;
-						cout << "Expiry Date: " << productDetail.dateDay << "-" << productDetail.dateMonth << "-" << productDetail.dateYear << endl;
+						std::cout << "\nCategory: Pre-Cooked" << std::endl;
+						std::cout << "Name: " << productDetail.product << std::endl;
+						std::cout << "Code: " << productDetail.productCode << std::endl;
+						std::cout << "Expiry Date: " << productDetail.dateDay << "-" << productDetail.dateMonth << "-" << productDetail.dateYear << std::endl;
 					}
 					displayCopy.pop();
 				}
 				break;
 			}
 			default:
-				cout << "[WARNING]: SWITCH DISPLAY TYPE ERROR" << endl;
+				std::cout << "[WARNING]: SWITCH DISPLAY TYPE ERROR" << std::endl;
 				break;
 			}
 		}
 		}
-		ofstream writeData;
+		std::ofstream writeData;
 		writeData.open("V2.1C");
-		queue<item> displayCopy = allCategories;
+		std::queue<item> displayCopy = allCategories;
 		sizeToDisplay = static_cast<int>(displayCopy.size());
 
 		for (int i = 1; i <= sizeToDisplay; i++) {
@@ -296,7 +295,7 @@ int main() {
 			fstreamDateMonth = productDetail.dateMonth;
 			fstreamDateYear = productDetail.dateYear;
 
-			writeData << fstreamCategory << " " << fstreamName << " " << fstreamCode << " " << fstreamDateDay << " " << fstreamDateMonth << " " << fstreamDateYear << endl;
+			writeData << fstreamCategory << " " << fstreamName << " " << fstreamCode << " " << fstreamDateDay << " " << fstreamDateMonth << " " << fstreamDateYear << std::endl;
 
 			displayCopy.pop();
 		}
@@ -319,6 +318,6 @@ int main() {
 
 		displayNewMenu();
 		displayChoice();
-		cin >> functionChoice;
+		std::cin >> functionChoice;
 	}
 }
