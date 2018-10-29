@@ -6,6 +6,10 @@
 #include <future>
 #include <ctime>
 
+#include "imgui\imgui.h"
+#include "imgui\imgui_impl_glfw.h"
+
+#include "displayfunctions.hpp"
 #include "display.hpp"
 #include "functions.hpp"
 #include "timer.hpp"
@@ -31,7 +35,7 @@ int main() {
 	int displayTypeChoice; //to display all items, raw or precooked
 	int codeToDelete; //for user to enter code to delete
 
-					  //delcarations for fstream
+	//delcarations for fstream
 	int fstreamCategory;
 	std::string fstreamName;
 	int fstreamCode;
@@ -87,8 +91,23 @@ int main() {
 	std::this_thread::sleep_for(std::chrono::seconds(2));
 	auto dayWarning = std::async(&dateRegister::dayAlarm, &datesData); //to give warning when expiry date is close
 
-																  //start of program
+	window_rs window;
+	window.onCreate(1280, 720, "KitchenManagementX");
+	ImGui_ImplGlfw_Init(window, false);
+
+	while (window) {
+		ImGui_ImplGlfw_NewFrame(1);
+
+		ImGui::Begin("Hello");
+		ImGui::Separator();
+		ImGui::Text("-------STREAM-------");
+		ImGui::End();
+		ImGui::Render();
+	}
+
+	//start of program
 	system("cls");
+	std::this_thread::sleep_for(std::chrono::seconds(1));
 	displayChoice();
 	std::cin >> functionChoice;
 
